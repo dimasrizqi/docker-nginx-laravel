@@ -1,25 +1,17 @@
-version: '3.8'
+version: '3.9'
+
 services:
-  web:
-    build:
-      context: ./
-      dockerfile: web.dockerfile
-    volumes:
-      - ./:/var/www
-    ports:
-      - "85:80"
-    links:
-      - app
 
-  app:
-    build:
-      context: ./
-      dockerfile: app.dockerfile
-    volumes:
-      - ./:/var/www
-      
-networks:
-    simkahnetwork:
-        driver: bridge
+        app:
+                image: nginx:latest
+                volumes:
+                        - .:/var/www/html
 
-
+        elbe:
+                image: nginx:latest
+                volumes:
+                        - ./conf.d:/etc/nginx/conf.d
+                depends_on:
+                        - api
+                ports:
+                        - 85:3000
